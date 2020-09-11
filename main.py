@@ -98,7 +98,9 @@ async def list_task(q: Optional[bool] = None):
     - **False**: Tarefas não-concluídas
     """
     if q is not None:
-        if q:   
+        if q:
+            ## Aprendemos como esse FOR funciona pelo https://stackoverflow.com/questions/3420122/filter-dict-to-contain-only-certain-keys 
+            ## e mostramos pra algunmas pessoas da sala que estão com duvida em como filtrar o dicionario sem muitos FORs  
             filtered_tasks = {k:v for k,v in tasks.items() if v["status"]}
         else:
             filtered_tasks =  {k:v for k,v in tasks.items() if not v["status"]}
