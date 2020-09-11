@@ -23,16 +23,16 @@ app = FastAPI(
 
 tasks = {
     uuid.uuid4(): {
-        "name":"nome",
-        "description":"abc",
+        "name":"APS1",
+        "description":"Aps 1 de Megadados",
         "status":False },
     uuid.uuid4(): {
-        "name":"nome1",
-        "description":"qqq",
+        "name":"H1",
+        "description":"Roteiro de Computacao em Nuvem",
         "status":False },
     uuid.uuid4(): {
-        "name":"nome2",
-        "description":"ff",
+        "name":"Entrega 2",
+        "description":"Turorial 2 e entraga 2 de SoC Linux",
         "status":True}
 }
 
@@ -46,12 +46,13 @@ async def create_task(task: Task):
     """
     
     id = uuid.uuid4()
-    tasks[id] = task
-    return id
+    task_dict = task.dict()
+    tasks[id] = task_dict
+    return {"id" : id}
 
 
 @app.patch("/edit/{id}", summary="Edita uma task", tags=["task"])
-async def edit_tas(id: uuid.UUID, task: TaskDescription):
+async def edit_tas(id: uuid.UUID, taskDesc: TaskDescription):
     """
     - **description**: descrição
     """
@@ -59,19 +60,19 @@ async def edit_tas(id: uuid.UUID, task: TaskDescription):
     if id  not in tasks:
         raise HTTPException(status_code=404, detail="ID not found")
 
-    tasks[id]["description"] = task.description 
+    tasks[id]["description"] = taskDesc.description 
     
 
     return tasks[id]
 
 @app.patch("/status/{id}", summary="Atualiza a situação de uma task", tags=["task"])
-async def edit_tas(id: uuid.UUID, task: TaskStatus):
+async def edit_tas(id: uuid.UUID, taskStatus: TaskStatus):
     """
     - **status**: Situação da tarefa
     """
     if id  not in tasks:
         raise HTTPException(status_code=404, detail="ID not found")
-    tasks[id]["status"] = task.status
+    tasks[id]["status"] = taskStatus.status
     return tasks[id]
 
 
